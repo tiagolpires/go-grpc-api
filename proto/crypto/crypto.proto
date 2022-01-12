@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+message Crypto {
+  string id = 1;
+  string name = 2;
+  int64 votes = 3;
+}
+
+message GetByIdRequest {
+  string id = 1;
+}
+
+message CryptoResponse {
+    Crypto crypto = 1;
+    string error = 2;
+}
+
+service CryptoService {
+  rpc GetCryptoById(GetByIdRequest) returns (CryptoResponse);
+}
