@@ -1,9 +1,7 @@
 package models
 
-import (
-	cryptoPb "go-grpc-api/proto/crypto"
-)
-
 type Crypto struct {
-	cryptoPb.Crypto
+	Id    string
+	Name  string
+	Votes int64
 }

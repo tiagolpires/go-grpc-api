@@ -8,6 +8,7 @@ import (
 	"gorm.io/gorm"
 
 	"go-grpc-api/config"
+	"go-grpc-api/database/migrations"
 )
 
 var db *gorm.DB
@@ -23,6 +24,7 @@ func StartDB() {
 	db = database
 	log.Println("Connected to Database 🚀")
 
+	migrations.Run(db)
 }
 
 func GetDatabase() *gorm.DB {
