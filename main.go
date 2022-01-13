@@ -3,6 +3,7 @@ package main
 import (
 	"go-grpc-api/config"
 	cryptoController "go-grpc-api/controllers/crypto"
+	"go-grpc-api/database"
 	cryptoPb "go-grpc-api/proto/crypto"
 	"log"
 	"net"
@@ -11,6 +12,7 @@ import (
 )
 
 func main() {
+	database.StartDB()
 
 	lis, err := net.Listen("tcp", config.ServerPort)
 
