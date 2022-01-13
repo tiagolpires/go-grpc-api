@@ -21,8 +21,10 @@ func main() {
 
 	client := cryptoPb.NewCryptoServiceClient(connection)
 
-	// createCrypto(client)
+	createCrypto(client)
 	getCryptoById(client)
+	listCryptos(client)
+	deleteCryptoById(client)
 }
 
 func createCrypto(client cryptoPb.CryptoServiceClient) {
@@ -47,4 +49,27 @@ func getCryptoById(client cryptoPb.CryptoServiceClient) {
 	}
 
 	log.Printf("GetCryptoById output: %s", response.Crypto)
+}
+
+func listCryptos(client cryptoPb.CryptoServiceClient) {
+	empty := &cryptoPb.EmptyRequest{}
+	response, err := client.ListCryptos(context.Background(), empty)
+
+	if err != nil {
+		log.Fatalf("could not list cryptos: %v", err)
+	}
+
+	log.Printf("ListCryptos output: %s", response.Cryptos)
+}
+
+func deleteCryptoById(client cryptoPb.CryptoServiceClient) {
+	request := &cryptoPb.GetCryptoByIdRequest{Id: 1}
+
+	response, err := client.DeleteCryptoById(context.Background(), request)
+
+	if err != nil {
+		log.Fatalf("could not delete crypto: %v", err)
+	}
+
+	log.Printf("DeleteCryptoById output: %s", response)
 }

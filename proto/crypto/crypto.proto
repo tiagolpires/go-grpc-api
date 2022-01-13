@@ -1,5 +1,12 @@
 syntax = "proto3";
 
+service CryptoService {
+  rpc GetCryptoById(GetCryptoByIdRequest) returns (CryptoResponse);
+  rpc ListCryptos(EmptyRequest) returns (ListCryptosResponse);
+  rpc CreateCrypto(CreateCryptoRequest) returns (CryptoResponse);
+  rpc DeleteCryptoById(GetCryptoByIdRequest) returns (SuccessMessageResponse);
+}
+
 message Crypto {
   uint64 id = 1;
   string name = 2;
@@ -20,7 +27,15 @@ message CryptoResponse {
     string error = 2;
 }
 
-service CryptoService {
-  rpc GetCryptoById(GetCryptoByIdRequest) returns (CryptoResponse);
-  rpc CreateCrypto(CreateCryptoRequest) returns (CryptoResponse);
+message ListCryptosResponse {
+  repeated Crypto cryptos = 1;
+  string error = 2;
 }
+
+message SuccessMessageResponse {
+  string message = 1;
+  bool success = 2;
+  string error = 3;
+}
+
+message EmptyRequest {}
