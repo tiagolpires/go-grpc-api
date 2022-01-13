@@ -1,7 +1,7 @@
 package models
 
 type Crypto struct {
-	Id    string
+	ID    uint64 `gorm:"primaryKey"`
 	Name  string
 	Votes int64
 }

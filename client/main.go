@@ -21,7 +21,24 @@ func main() {
 
 	client := cryptoPb.NewCryptoServiceClient(connection)
 
-	request := &cryptoPb.GetByIdRequest{Id: "1234"}
+	createCrypto(client)
+	getCryptoById(client)
+}
+
+func createCrypto(client cryptoPb.CryptoServiceClient) {
+	request := &cryptoPb.CreateCryptoRequest{Name: "Devikins", Votes: 4}
+
+	response, err := client.CreateCrypto(context.Background(), request)
+
+	if err != nil {
+		log.Fatalf("could not create crypto: %v", err)
+	}
+
+	log.Printf("CreateCrypto output: %s", response.Crypto)
+}
+
+func getCryptoById(client cryptoPb.CryptoServiceClient) {
+	request := &cryptoPb.GetByIdRequest{Id: 1}
 
 	response, err := client.GetCryptoById(context.Background(), request)
 
@@ -29,5 +46,5 @@ func main() {
 		log.Fatalf("could not get crypto: %v", err)
 	}
 
-	log.Printf("Crypto: %s", response.Crypto)
+	log.Printf("GetCryptoById output: %s", response.Crypto)
 }
