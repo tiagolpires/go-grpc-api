@@ -23,6 +23,7 @@ func main() {
 
 	createCrypto(client)
 	getCryptoById(client)
+	updateCrypto(client)
 	listCryptos(client)
 	deleteCryptoById(client)
 }
@@ -49,6 +50,18 @@ func getCryptoById(client cryptoPb.CryptoServiceClient) {
 	}
 
 	log.Printf("GetCryptoById output: %s", response.Crypto)
+}
+
+func updateCrypto(client cryptoPb.CryptoServiceClient) {
+	request := &cryptoPb.UpdateCryptoRequest{Id: 1, Name: "Bitcoin", Votes: 5}
+
+	response, err := client.UpdateCrypto(context.Background(), request)
+
+	if err != nil {
+		log.Fatalf("could not update crypto: %v", err)
+	}
+
+	log.Printf("UpdateCrypto output: %s", response.Crypto)
 }
 
 func listCryptos(client cryptoPb.CryptoServiceClient) {

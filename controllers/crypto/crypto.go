@@ -57,6 +57,18 @@ func (s *Server) CreateCrypto(ctx context.Context, request *cryptoPb.CreateCrypt
 	return &cryptoPb.CryptoResponse{Crypto: &response}, nil
 }
 
+func (s *Server) UpdateCrypto(ctx context.Context, request *cryptoPb.UpdateCryptoRequest) (*cryptoPb.CryptoResponse, error) {
+	db := database.GetDatabase()
+
+	crypto := models.Crypto{ID: request.Id, Name: request.Name, Votes: request.Votes}
+
+	db.Save(&crypto)
+
+	response := cryptoPb.Crypto{Id: crypto.ID, Name: crypto.Name, Votes: crypto.Votes}
+
+	return &cryptoPb.CryptoResponse{Crypto: &response}, nil
+}
+
 func (s *Server) DeleteCryptoById(ctx context.Context, request *cryptoPb.GetCryptoByIdRequest) (*cryptoPb.SuccessMessageResponse, error) {
 	db := database.GetDatabase()
 
