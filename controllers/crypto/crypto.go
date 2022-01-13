@@ -13,6 +13,6 @@ type Server struct {
 
 func (s *Server) GetCryptoById(ctx context.Context, request *cryptoPb.GetByIdRequest) (*cryptoPb.CryptoResponse, error) {
 	log.Printf("Received: %v", request.Id)
-	crypto := cryptoPb.Crypto{Id: "id", Name: "Name", Votes: 1}
+	crypto := cryptoPb.Crypto{Id: "1234", Name: "BNB", Votes: 1}
 	return &cryptoPb.CryptoResponse{Crypto: &crypto}, nil
 }
