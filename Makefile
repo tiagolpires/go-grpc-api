@@ -1,10 +1,8 @@
-generate:
-	@protoc --proto_path=proto proto/crypto/crypto.proto --go_out=plugins=grpc:proto
-
-run:
-	@echo "---- Running Server ----"
+start:
 	@go run main.go
 
-run_client:
-	@echo "---- Running Client ----"
+start_client:
 	@go run client/main.go
+	
+gen:
+	@protoc --proto_path=proto proto/crypto/crypto.proto --go_out=plugins=grpc:proto

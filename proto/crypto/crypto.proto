@@ -6,7 +6,7 @@ message Crypto {
   int64 votes = 3;
 }
 
-message GetByIdRequest {
+message GetCryptoByIdRequest {
   uint64 id = 1;
 }
 
@@ -21,6 +21,6 @@ message CryptoResponse {
 }
 
 service CryptoService {
-  rpc GetCryptoById(GetByIdRequest) returns (CryptoResponse);
+  rpc GetCryptoById(GetCryptoByIdRequest) returns (CryptoResponse);
   rpc CreateCrypto(CreateCryptoRequest) returns (CryptoResponse);
 }

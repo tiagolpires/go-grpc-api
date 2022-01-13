@@ -21,7 +21,7 @@ func main() {
 
 	client := cryptoPb.NewCryptoServiceClient(connection)
 
-	createCrypto(client)
+	// createCrypto(client)
 	getCryptoById(client)
 }
 
@@ -38,7 +38,7 @@ func createCrypto(client cryptoPb.CryptoServiceClient) {
 }
 
 func getCryptoById(client cryptoPb.CryptoServiceClient) {
-	request := &cryptoPb.GetByIdRequest{Id: 1}
+	request := &cryptoPb.GetCryptoByIdRequest{Id: 1}
 
 	response, err := client.GetCryptoById(context.Background(), request)
 
