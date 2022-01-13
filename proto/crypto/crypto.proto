@@ -1,32 +1,37 @@
 syntax = "proto3";
 
 service CryptoService {
-  rpc GetCryptoById(GetCryptoByIdRequest) returns (CryptoResponse);
+  rpc UpvoteCryptoById(CryptoIdRequest) returns (CryptoResponse);
+  rpc DownvoteCryptoById(CryptoIdRequest) returns (CryptoResponse);
+  rpc GetCryptoById(CryptoIdRequest) returns (CryptoResponse);
   rpc ListCryptos(EmptyRequest) returns (ListCryptosResponse);
   rpc CreateCrypto(CreateCryptoRequest) returns (CryptoResponse);
   rpc UpdateCrypto(UpdateCryptoRequest) returns (CryptoResponse);
-  rpc DeleteCryptoById(GetCryptoByIdRequest) returns (SuccessMessageResponse);
+  rpc DeleteCryptoById(CryptoIdRequest) returns (SuccessMessageResponse);
 }
 
 message Crypto {
   uint64 id = 1;
   string name = 2;
-  int64 votes = 3;
+  string code = 3;
+  int64 votes = 4;
 }
 
-message GetCryptoByIdRequest {
+message CryptoIdRequest {
   uint64 id = 1;
 }
 
 message CreateCryptoRequest {
   string name = 1;
-  int64 votes = 2;
+  string code = 2;
+  int64 votes = 3;
 }
 
 message UpdateCryptoRequest {
   uint64 id = 1;
   string name = 2;
-  int64 votes = 3;
+  string code = 3;
+  int64 votes = 4;
 }
 
 message CryptoResponse {

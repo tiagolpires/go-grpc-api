@@ -24,12 +24,38 @@ func main() {
 	createCrypto(client)
 	getCryptoById(client)
 	updateCrypto(client)
+	UpvoteCrypto(client)
+	DownvoteCrypto(client)
 	listCryptos(client)
 	deleteCryptoById(client)
 }
 
+func UpvoteCrypto(client cryptoPb.CryptoServiceClient) {
+	request := &cryptoPb.CryptoIdRequest{Id: 2}
+
+	response, err := client.UpvoteCryptoById(context.Background(), request)
+
+	if err != nil {
+		log.Fatalf("could not upvote crypto: %v", err)
+	}
+
+	log.Printf("UpvoteCrypto output: %s", response.Crypto)
+}
+
+func DownvoteCrypto(client cryptoPb.CryptoServiceClient) {
+	request := &cryptoPb.CryptoIdRequest{Id: 2}
+
+	response, err := client.DownvoteCryptoById(context.Background(), request)
+
+	if err != nil {
+		log.Fatalf("could not downvote crypto: %v", err)
+	}
+
+	log.Printf("DownvoteCrypto output: %s", response.Crypto)
+}
+
 func createCrypto(client cryptoPb.CryptoServiceClient) {
-	request := &cryptoPb.CreateCryptoRequest{Name: "Devikins", Votes: 4}
+	request := &cryptoPb.CreateCryptoRequest{Name: "Devikins", Code: "DVK", Votes: 4}
 
 	response, err := client.CreateCrypto(context.Background(), request)
 
@@ -41,7 +67,7 @@ func createCrypto(client cryptoPb.CryptoServiceClient) {
 }
 
 func getCryptoById(client cryptoPb.CryptoServiceClient) {
-	request := &cryptoPb.GetCryptoByIdRequest{Id: 1}
+	request := &cryptoPb.CryptoIdRequest{Id: 1}
 
 	response, err := client.GetCryptoById(context.Background(), request)
 
@@ -53,7 +79,7 @@ func getCryptoById(client cryptoPb.CryptoServiceClient) {
 }
 
 func updateCrypto(client cryptoPb.CryptoServiceClient) {
-	request := &cryptoPb.UpdateCryptoRequest{Id: 1, Name: "Bitcoin", Votes: 5}
+	request := &cryptoPb.UpdateCryptoRequest{Id: 1, Code: "BTC", Name: "Bitcoin", Votes: 5}
 
 	response, err := client.UpdateCrypto(context.Background(), request)
 
@@ -76,7 +102,7 @@ func listCryptos(client cryptoPb.CryptoServiceClient) {
 }
 
 func deleteCryptoById(client cryptoPb.CryptoServiceClient) {
-	request := &cryptoPb.GetCryptoByIdRequest{Id: 1}
+	request := &cryptoPb.CryptoIdRequest{Id: 1}
 
 	response, err := client.DeleteCryptoById(context.Background(), request)
 
