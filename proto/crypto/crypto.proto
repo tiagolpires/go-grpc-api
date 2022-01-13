@@ -3,6 +3,7 @@ syntax = "proto3";
 service CryptoService {
   rpc UpvoteCryptoById(CryptoIdRequest) returns (CryptoResponse);
   rpc DownvoteCryptoById(CryptoIdRequest) returns (CryptoResponse);
+  rpc GetCryptoStreamById(CryptoIdRequest) returns (stream CryptoResponse);
   rpc GetCryptoById(CryptoIdRequest) returns (CryptoResponse);
   rpc ListCryptos(EmptyRequest) returns (ListCryptosResponse);
   rpc CreateCrypto(CreateCryptoRequest) returns (CryptoResponse);

@@ -5,6 +5,7 @@ import (
 	"go-grpc-api/database"
 	"go-grpc-api/models"
 	cryptoPb "go-grpc-api/proto/crypto"
+	"time"
 )
 
 type Server struct {
@@ -41,6 +42,25 @@ func (s *Server) DownvoteCryptoById(ctx context.Context, request *cryptoPb.Crypt
 	response := cryptoPb.Crypto{Id: crypto.ID, Code: crypto.Code, Name: crypto.Name, Votes: crypto.Votes}
 
 	return &cryptoPb.CryptoResponse{Crypto: &response}, nil
+}
+
+func (s *Server) GetCryptoStreamById(request *cryptoPb.CryptoIdRequest, stream cryptoPb.CryptoService_GetCryptoStreamByIdServer) error {
+	db := database.GetDatabase()
+
+	var crypto models.Crypto
+
+	db.First(&crypto, request.Id)
+
+	response := cryptoPb.Crypto{Id: crypto.ID, Code: crypto.Code, Name: crypto.Name, Votes: crypto.Votes}
+
+	for i := 0; i < 5; i++ {
+		time.Sleep(1 * time.Second)
+		if err := stream.Send(&cryptoPb.CryptoResponse{Crypto: &response}); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (s *Server) GetCryptoById(ctx context.Context, request *cryptoPb.CryptoIdRequest) (*cryptoPb.CryptoResponse, error) {

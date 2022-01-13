@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"io"
 	"log"
 
 	cryptoPb "go-grpc-api/proto/crypto"
@@ -21,17 +23,18 @@ func main() {
 
 	client := cryptoPb.NewCryptoServiceClient(connection)
 
-	createCrypto(client)
-	getCryptoById(client)
-	updateCrypto(client)
 	UpvoteCrypto(client)
 	DownvoteCrypto(client)
+	getCryptoStreamById(client)
+	updateCrypto(client)
+	getCryptoById(client)
 	listCryptos(client)
-	deleteCryptoById(client)
+	// createCrypto(client)
+	// deleteCryptoById(client)
 }
 
 func UpvoteCrypto(client cryptoPb.CryptoServiceClient) {
-	request := &cryptoPb.CryptoIdRequest{Id: 2}
+	request := &cryptoPb.CryptoIdRequest{Id: 1}
 
 	response, err := client.UpvoteCryptoById(context.Background(), request)
 
@@ -39,11 +42,11 @@ func UpvoteCrypto(client cryptoPb.CryptoServiceClient) {
 		log.Fatalf("could not upvote crypto: %v", err)
 	}
 
-	log.Printf("UpvoteCrypto output: %s", response.Crypto)
+	fmt.Printf("UpvoteCrypto...\nCrypto: %s\n\n", response.Crypto)
 }
 
 func DownvoteCrypto(client cryptoPb.CryptoServiceClient) {
-	request := &cryptoPb.CryptoIdRequest{Id: 2}
+	request := &cryptoPb.CryptoIdRequest{Id: 1}
 
 	response, err := client.DownvoteCryptoById(context.Background(), request)
 
@@ -51,9 +54,34 @@ func DownvoteCrypto(client cryptoPb.CryptoServiceClient) {
 		log.Fatalf("could not downvote crypto: %v", err)
 	}
 
-	log.Printf("DownvoteCrypto output: %s", response.Crypto)
+	fmt.Printf("DownvoteCrypto...\nCrypto: %s\n\n", response.Crypto)
 }
 
+func getCryptoStreamById(client cryptoPb.CryptoServiceClient) {
+	request := &cryptoPb.CryptoIdRequest{Id: 1}
+
+	stream, err := client.GetCryptoStreamById(context.Background(), request)
+
+	if err != nil {
+		log.Fatalf("could not get crypto stream: %v", err)
+	}
+
+	fmt.Println("Start crypto streaming...")
+
+	for {
+		crypto, err := stream.Recv()
+
+		if err == io.EOF {
+			fmt.Printf("Finish crypto streaming\n\n")
+			break
+		}
+
+		if err != nil {
+			log.Fatalf("an error ocurred while streaming crypto: %v", err)
+		}
+		fmt.Printf("%s Votes: %d\n", crypto.Crypto.Name, crypto.Crypto.Votes)
+	}
+}
 func createCrypto(client cryptoPb.CryptoServiceClient) {
 	request := &cryptoPb.CreateCryptoRequest{Name: "Devikins", Code: "DVK", Votes: 4}
 
@@ -63,7 +91,7 @@ func createCrypto(client cryptoPb.CryptoServiceClient) {
 		log.Fatalf("could not create crypto: %v", err)
 	}
 
-	log.Printf("CreateCrypto output: %s", response.Crypto)
+	fmt.Printf("CreateCrypto...\nCrypto: %s\n\n", response.Crypto)
 }
 
 func getCryptoById(client cryptoPb.CryptoServiceClient) {
@@ -75,7 +103,7 @@ func getCryptoById(client cryptoPb.CryptoServiceClient) {
 		log.Fatalf("could not get crypto: %v", err)
 	}
 
-	log.Printf("GetCryptoById output: %s", response.Crypto)
+	fmt.Printf("GetCryptoById...\nCrypto: %s\n\n", response.Crypto)
 }
 
 func updateCrypto(client cryptoPb.CryptoServiceClient) {
@@ -87,7 +115,7 @@ func updateCrypto(client cryptoPb.CryptoServiceClient) {
 		log.Fatalf("could not update crypto: %v", err)
 	}
 
-	log.Printf("UpdateCrypto output: %s", response.Crypto)
+	fmt.Printf("UpdateCrypto...\nCrypto: %s\n\n", response.Crypto)
 }
 
 func listCryptos(client cryptoPb.CryptoServiceClient) {
@@ -98,7 +126,7 @@ func listCryptos(client cryptoPb.CryptoServiceClient) {
 		log.Fatalf("could not list cryptos: %v", err)
 	}
 
-	log.Printf("ListCryptos output: %s", response.Cryptos)
+	fmt.Printf("ListCryptos...\nList: %s\n\n", response.Cryptos)
 }
 
 func deleteCryptoById(client cryptoPb.CryptoServiceClient) {
@@ -110,5 +138,5 @@ func deleteCryptoById(client cryptoPb.CryptoServiceClient) {
 		log.Fatalf("could not delete crypto: %v", err)
 	}
 
-	log.Printf("DeleteCryptoById output: %s", response)
+	fmt.Printf("DeleteCryptoById...\nResponse: %s\n\n", response)
 }
