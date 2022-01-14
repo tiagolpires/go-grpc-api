@@ -1,5 +1,6 @@
 # Go gRPC API
-gRPC API developed with Go
+* Cryptocurrency API developed with Go and gRPC
+* Upvote, Downvote and Stream Cryptocurrencies
 
 ## ⚡️ Start
 
