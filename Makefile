@@ -9,3 +9,6 @@ gen:
 
 seed:
 	@go run database/seeder/seeder.go
+
+test:
+	@go test ./controllers/crypto
